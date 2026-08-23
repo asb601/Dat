@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-// The photo lives at public/us.PNG and is served straight from the CDN.
+// The photo lives at public/us.jpg and is served straight from the CDN.
 // Referenced by path rather than looked up on disk, because the public/
 // folder isn't on the filesystem in a serverless deployment.
-const PHOTO = '/us.PNG';
+const PHOTO = '/us.jpg';
 
 export default function Yay() {
   return (
