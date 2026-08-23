@@ -1,0 +1,346 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600;700&display=swap');
+
+:root {
+  --blush: #ffeaf3;
+  --petal: #ffd3e6;
+  --bubblegum: #ff9ec9;
+  --rose: #ff6fae;
+  --deep-rose: #e0447f;
+  --plum: #7a3358;
+  --cream: #fff8fb;
+  --lilac: #e8d5ff;
+  --peach: #ffd9c7;
+  --shadow-pink: rgba(224, 68, 127, 0.18);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
+  color: var(--plum);
+  background:
+    radial-gradient(1100px 700px at 12% -8%, #fff0f7 0%, transparent 60%),
+    radial-gradient(900px 700px at 92% 4%, var(--lilac) 0%, transparent 55%),
+    radial-gradient(900px 800px at 78% 102%, var(--peach) 0%, transparent 55%),
+    linear-gradient(170deg, var(--blush) 0%, #ffe1ef 45%, #ffd8ec 100%);
+  background-attachment: fixed;
+  min-height: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- layout ---------- */
+.stage {
+  position: relative;
+  z-index: 2;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px 56px;
+}
+
+.card {
+  width: min(680px, 100%);
+  background: linear-gradient(160deg, rgba(255,255,255,0.92), rgba(255,244,250,0.86));
+  border: 2px solid rgba(255, 158, 201, 0.55);
+  border-radius: 34px;
+  padding: clamp(28px, 5vw, 52px);
+  text-align: center;
+  box-shadow:
+    0 24px 60px -18px var(--shadow-pink),
+    0 4px 0 rgba(255,255,255,0.9) inset;
+  backdrop-filter: blur(6px);
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.card--wide { width: min(760px, 100%); }
+
+/* The final page is just a photo and one line — keep it fully opaque so
+   nothing floats through behind it. */
+.card--photo {
+  width: min(520px, 100%);
+  background: #fffafc;
+  backdrop-filter: none;
+  padding: clamp(22px, 4vw, 34px);
+}
+
+/* ---------- type ---------- */
+.kicker {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.25rem, 3.5vw, 1.7rem);
+  color: var(--deep-rose);
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 6.5vw, 3.1rem);
+  line-height: 1.12;
+  font-weight: 800;
+  background: linear-gradient(120deg, var(--deep-rose), #ff85bf 55%, #c86bd8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 18px;
+}
+
+.lede {
+  font-size: clamp(1.02rem, 2.6vw, 1.22rem);
+  line-height: 1.65;
+  color: #8a4467;
+  font-weight: 500;
+  max-width: 34rem;
+  margin: 0 auto 14px;
+}
+
+.lede + .lede { margin-top: 0; }
+
+.note {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.15rem, 3vw, 1.45rem);
+  color: var(--deep-rose);
+  margin-top: 22px;
+}
+
+.tiny {
+  font-size: 0.85rem;
+  color: #b07a95;
+  margin-top: 26px;
+  font-weight: 500;
+}
+
+/* ---------- badge / emoji ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(2.6rem, 9vw, 3.6rem);
+  margin-bottom: 10px;
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+.divider {
+  width: 92px;
+  height: 3px;
+  margin: 24px auto;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent, var(--bubblegum), transparent);
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: clamp(1rem, 2.6vw, 1.15rem);
+  padding: 15px 34px;
+  border: none;
+  border-radius: 99px;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+  box-shadow: 0 12px 24px -8px rgba(224, 68, 127, 0.6), 0 3px 0 #c2376c;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 18px 30px -8px rgba(224, 68, 127, 0.65), 0 3px 0 #c2376c;
+  filter: saturate(1.1);
+}
+
+.btn:active { transform: translateY(1px) scale(0.99); }
+
+.btn--ghost {
+  background: #fff;
+  color: var(--deep-rose);
+  border: 2px solid var(--petal);
+  box-shadow: 0 10px 20px -10px var(--shadow-pink);
+}
+
+.btn--yes {
+  background: linear-gradient(135deg, #ff86c2, #e0447f);
+  padding: 17px 46px;
+  font-size: clamp(1.05rem, 3vw, 1.3rem);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+.btn--no {
+  background: #fff;
+  color: #c76a95;
+  border: 2px solid var(--petal);
+  box-shadow: 0 10px 20px -10px var(--shadow-pink);
+  padding: 17px 46px;
+  font-size: clamp(1.05rem, 3vw, 1.3rem);
+  animation: none;
+}
+
+.btn--no:hover { transform: none; filter: none; }
+
+.choices {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  min-height: 76px;
+}
+
+/* the runaway button lifts out of flow once it starts fleeing */
+.runaway {
+  position: fixed;
+  z-index: 60;
+  transition: left 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              top 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.22s ease;
+}
+
+.runaway-slot {
+  width: var(--slot-w, 160px);
+  height: var(--slot-h, 58px);
+}
+
+/* ---------- taunts ---------- */
+.taunt {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.15rem, 3.2vw, 1.5rem);
+  color: var(--deep-rose);
+  min-height: 2em;
+  margin-top: 20px;
+  animation: pop 0.35s ease both;
+}
+
+/* ---------- photo frame ---------- */
+.frame {
+  margin: 26px auto 8px;
+  width: min(320px, 78%);
+  aspect-ratio: 4 / 5;
+  border-radius: 26px;
+  padding: 12px;
+  background: linear-gradient(150deg, #fff, #ffeef6);
+  border: 2px solid var(--petal);
+  box-shadow: 0 20px 40px -16px var(--shadow-pink);
+  transform: rotate(-2.5deg);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.frame:hover { transform: rotate(0deg) scale(1.02); }
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+}
+
+.caption {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.75rem, 6vw, 2.6rem);
+  font-weight: 700;
+  color: var(--deep-rose);
+  margin: 20px auto 2px;
+  line-height: 1.2;
+  transform: rotate(-1.5deg);
+}
+
+/* Let the photo keep its own shape instead of being cropped to the
+   frame. The frame shrink-wraps whatever aspect ratio the image has. */
+.frame--big {
+  width: fit-content;
+  max-width: 100%;
+  aspect-ratio: auto;
+  margin-top: 4px;
+  padding: 10px;
+  line-height: 0;
+}
+
+.frame--big img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+}
+
+.frame--big.frame--empty {
+  width: min(300px, 80%);
+  aspect-ratio: 4 / 5;
+  line-height: 1.4;
+}
+
+.frame--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #cf8fae;
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  border-style: dashed;
+}
+
+/* ---------- floating decorations ---------- */
+.sky {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.floaty {
+  position: absolute;
+  bottom: -12vh;
+  font-size: var(--size, 22px);
+  opacity: 0;
+  animation: float-up var(--dur, 14s) linear var(--delay, 0s) infinite;
+  filter: drop-shadow(0 4px 6px rgba(224, 68, 127, 0.2));
+}
+
+/* ---------- animations ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-10px) rotate(4deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 12px 24px -8px rgba(224,68,127,0.6), 0 3px 0 #c2376c; }
+  50% { transform: scale(1.05); box-shadow: 0 20px 32px -8px rgba(224,68,127,0.75), 0 3px 0 #c2376c; }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(8px) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.85; }
+  90% { opacity: 0.7; }
+  100% { transform: translateY(-118vh) rotate(320deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
