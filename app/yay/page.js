@@ -16,6 +16,18 @@ export default function Yay() {
 
         <p className="caption">my bangaram and me 💗</p>
 
+        <div className="movie-ask">
+          <p className="movie-ask__kicker">okay one more tiny question… 🙈</p>
+          <p className="movie-ask__q">
+            can I take you to a movie next? 🎬
+          </p>
+          <p className="movie-ask__line">
+            you pick the film, I&apos;ll get the tickets 🎟️ and the popcorn 🍿
+            <br />
+            corner seats, lights down, just us two 🌙💗
+          </p>
+        </div>
+
         <Link href="/" className="back-link">
           read it from the start ↺
         </Link>
