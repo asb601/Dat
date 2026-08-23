@@ -25,10 +25,29 @@ body {
     radial-gradient(900px 700px at 92% 4%, var(--lilac) 0%, transparent 55%),
     radial-gradient(900px 800px at 78% 102%, var(--peach) 0%, transparent 55%),
     linear-gradient(170deg, var(--blush) 0%, #ffe1ef 45%, #ffd8ec 100%);
-  background-attachment: fixed;
+  /* background-attachment: fixed jitters badly on iOS Safari as the
+     toolbars collapse — a fixed decorative layer does the same job. */
+  background-repeat: no-repeat;
   min-height: 100%;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Paints the gradient behind everything without background-attachment. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 700px at 12% -8%, #fff0f7 0%, transparent 60%),
+    radial-gradient(900px 700px at 92% 4%, var(--lilac) 0%, transparent 55%),
+    radial-gradient(900px 800px at 78% 102%, var(--peach) 0%, transparent 55%),
+    linear-gradient(170deg, var(--blush) 0%, #ffe1ef 45%, #ffd8ec 100%);
 }
 
 /* ---------- layout ---------- */
@@ -39,7 +58,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 20px 56px;
+  padding:
+    calc(32px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right))
+    calc(56px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
 }
 
 .card {
@@ -287,7 +308,7 @@ h1 {
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 72vh;
+  max-height: 68dvh;
   object-fit: contain;
 }
 
@@ -353,6 +374,68 @@ h1 {
   10% { opacity: 0.85; }
   90% { opacity: 0.7; }
   100% { transform: translateY(-118vh) rotate(320deg); opacity: 0; }
+}
+
+
+/* ---------- phones (iPhone 16 Pro is 402 x 874 CSS px) ---------- */
+@media (max-width: 520px) {
+  .stage {
+    align-items: flex-start;
+    padding-top: calc(20px + env(safe-area-inset-top));
+    padding-bottom: calc(32px + env(safe-area-inset-bottom));
+  }
+
+  .card {
+    border-radius: 26px;
+    padding: 26px 20px 30px;
+  }
+
+  .card--photo { padding: 16px 14px 22px; }
+
+  .lede {
+    font-size: 1.02rem;
+    line-height: 1.6;
+  }
+
+  .divider { margin: 20px auto; }
+
+  /* Stack the choices so neither button is ever half off-screen. */
+  .choices {
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+  }
+
+  .btn--yes,
+  .btn--no {
+    width: 100%;
+    max-width: 280px;
+    padding: 16px 24px;
+  }
+
+  /* The runaway button shrinks so it always fits a narrow screen. */
+  .runaway {
+    width: auto;
+    max-width: 46vw;
+    padding: 13px 20px;
+    font-size: 0.98rem;
+  }
+
+  .runaway-slot { display: none; }
+
+  .frame--big { padding: 8px; }
+
+  .frame--big img { max-height: 62dvh; }
+
+  .caption { font-size: 1.85rem; }
+
+  .back-link { font-size: 0.95rem; }
+}
+
+/* Short screens (landscape phone) — keep the photo on one screen. */
+@media (max-height: 520px) {
+  .frame--big img { max-height: 58dvh; }
+  .stage { align-items: flex-start; }
 }
 
 @media (prefers-reduced-motion: reduce) {

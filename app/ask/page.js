@@ -16,7 +16,11 @@ const TAUNTS = [
   'plot twist: there was never a no 💅',
 ];
 
-const SAFE_GAP = 190; // px the button keeps between itself and the cursor
+// How far the button stays from the cursor. Flat 190px is nearly half an
+// iPhone's width, so scale it down on small screens.
+function safeGap() {
+  return Math.max(90, Math.min(190, Math.min(window.innerWidth, window.innerHeight) * 0.32));
+}
 
 export default function Ask() {
   const router = useRouter();
@@ -27,6 +31,14 @@ export default function Ask() {
   const [pos, setPos] = useState({ left: 0, top: 0 });
   const [dodges, setDodges] = useState(0);
   const [slot, setSlot] = useState({ w: 168, h: 60 });
+  const [narrow, setNarrow] = useState(false);
+
+  useEffect(() => {
+    const check = () => setNarrow(window.innerWidth <= 520);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   // Remember the button's natural footprint so the row doesn't collapse
   // the moment it jumps out of the flow.
@@ -51,11 +63,20 @@ export default function Ask() {
     const w = r.width || slot.w;
     const h = r.height || slot.h;
     const pad = 14;
-    const maxLeft = Math.max(pad, window.innerWidth - w - pad);
-    const maxTop = Math.max(pad, window.innerHeight - h - pad);
+
+    // On iOS the Safari toolbars sit over the layout viewport, so a fixed
+    // element placed by innerHeight can land underneath them. visualViewport
+    // reports what is actually on screen.
+    const vw = Math.min(window.innerWidth, window.visualViewport?.width ?? Infinity);
+    const vh = Math.min(window.innerHeight, window.visualViewport?.height ?? Infinity);
+
+    const maxLeft = Math.max(pad, vw - w - pad);
+    const maxTop = Math.max(pad, vh - h - pad);
 
     const cx = typeof cursorX === 'number' ? cursorX : window.innerWidth / 2;
     const cy = typeof cursorY === 'number' ? cursorY : window.innerHeight / 2;
+
+    const gap = safeGap();
 
     // Try a bunch of random spots, keep the one furthest from the cursor.
     let best = { left: pad, top: pad };
@@ -68,7 +89,7 @@ export default function Ask() {
         bestDist = dist;
         best = { left, top };
       }
-      if (dist > SAFE_GAP * 1.8) break;
+      if (dist > gap * 1.8) break;
     }
 
     setPos(best);
@@ -86,7 +107,7 @@ export default function Ask() {
         e.clientX - (r.left + r.width / 2),
         e.clientY - (r.top + r.height / 2),
       );
-      if (dist < SAFE_GAP) flee(e.clientX, e.clientY);
+      if (dist < safeGap()) flee(e.clientX, e.clientY);
     };
 
     window.addEventListener('pointermove', onMove, { passive: true });
@@ -98,7 +119,11 @@ export default function Ask() {
     if (!fled) return undefined;
     const onResize = () => flee();
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.visualViewport?.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.visualViewport?.removeEventListener('resize', onResize);
+    };
   }, [fled, flee]);
 
   // Touch / stubborn-clicker fallbacks — "No" simply never lands.
@@ -111,7 +136,7 @@ export default function Ask() {
   };
 
   const taunt = dodges > 0 ? TAUNTS[(dodges - 1) % TAUNTS.length] : '';
-  const yesScale = Math.min(1 + dodges * 0.06, 1.6);
+  const yesScale = Math.min(1 + dodges * 0.06, narrow ? 1.12 : 1.6);
 
   return (
     <main className="stage">
