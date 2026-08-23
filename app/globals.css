@@ -105,6 +105,24 @@ h1 {
   margin-top: 22px;
 }
 
+/* Quiet way back to page one — present, but never competing with the photo. */
+.back-link {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #c98db0;
+  text-decoration: none;
+  letter-spacing: 0.2px;
+  opacity: 0.8;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--deep-rose);
+  opacity: 1;
+}
+
 .tiny {
   font-size: 0.85rem;
   color: #b07a95;

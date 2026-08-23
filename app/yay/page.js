@@ -1,52 +1,24 @@
-import fs from 'node:fs';
-import path from 'node:path';
+import Link from 'next/link';
 
-// Re-checked on every request so the photo can be dropped in after a build.
-export const dynamic = 'force-dynamic';
-
-// Drop an image named us.<ext> into /public and it shows up here.
-// Scans the folder so the extension's casing doesn't matter (us.PNG works).
-function findPhoto() {
-  const dir = path.join(process.cwd(), 'public');
-  const exts = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
-  let files = [];
-  try {
-    files = fs.readdirSync(dir);
-  } catch {
-    return null;
-  }
-  for (const name of ['us', 'her-photo']) {
-    const hit = files.find((f) => {
-      const dot = f.lastIndexOf('.');
-      if (dot < 1) return false;
-      return (
-        f.slice(0, dot).toLowerCase() === name
-        && exts.includes(f.slice(dot + 1).toLowerCase())
-      );
-    });
-    if (hit) return `/${hit}`;
-  }
-  return null;
-}
+// The photo lives at public/us.PNG and is served straight from the CDN.
+// Referenced by path rather than looked up on disk, because the public/
+// folder isn't on the filesystem in a serverless deployment.
+const PHOTO = '/us.PNG';
 
 export default function Yay() {
-  const photo = findPhoto();
-
   return (
     <main className="stage">
       <section className="card card--photo">
-        {photo ? (
-          <div className="frame frame--big">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photo} alt="my bangaram and me" />
-          </div>
-        ) : (
-          <div className="frame frame--big frame--empty">
-            <span style={{ fontSize: '2rem' }}>🖼️</span>
-          </div>
-        )}
+        <div className="frame frame--big">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={PHOTO} alt="my bangaram and me" />
+        </div>
 
         <p className="caption">my bangaram and me 💗</p>
+
+        <Link href="/" className="back-link">
+          read it from the start ↺
+        </Link>
       </section>
     </main>
   );
