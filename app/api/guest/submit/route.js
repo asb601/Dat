@@ -1,14 +1,10 @@
 import { NextResponse } from 'next/server';
-import { getSession } from '@/lib/session';
 import { getState, saveState } from '@/lib/store';
 import { challengeStatus, redactForGuest } from '@/lib/guest';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
-  if (!(await getSession())) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-  }
   const body = await request.json().catch(() => ({}));
   const note = typeof body.note === 'string' ? body.note.trim().slice(0, 1000) : '';
 

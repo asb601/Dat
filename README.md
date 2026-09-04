@@ -16,7 +16,7 @@ and when mission control (you) approves it, the Movie Vault opens.
   5-failures/15-min lockout. Edit everything, approve/reject, lock/unlock,
   reorder movies, reset.
 - **State** — one JSON document in Upstash Redis (Vercel marketplace) or, in
-  local dev without Redis, a gitignored `.data/state.json` file. All personal
+  local dev without Redis, a gitignored file in `.data/`. All personal
   content is seeded from `lib/seed.js` and edited in the admin dashboard.
 
 ## Setup
