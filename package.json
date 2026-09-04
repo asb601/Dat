@@ -5,11 +5,18 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "test": "node --test 'test/*.test.mjs'",
+    "hash-password": "node scripts/hash-password.mjs"
   },
   "dependencies": {
     "next": "^15.5.23",
     "react": "19.1.0",
     "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.5.23"
   }
 }

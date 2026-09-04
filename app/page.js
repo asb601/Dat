@@ -1,37 +1,29 @@
-import Link from 'next/link';
+import { getSession } from '@/lib/session';
+import { getState } from '@/lib/store';
+import { redactForGuest } from '@/lib/guest';
+import Mission from '@/components/Mission';
 
-export default function Home() {
-  return (
-    <main className="stage">
-      <section className="card">
-        <div className="badge">🌸💗🌸</div>
+export const dynamic = 'force-dynamic';
 
-        <p className="kicker">a tiny page, made just for you</p>
-        <h1>Thank you for saying yes to coming</h1>
+export default async function Home() {
+  const session = await getSession();
 
-        <p className="lede">
-          There was no water for a shower. Any normal person would have said
-          &quot;not today&quot; and gone straight back to sleep. You let yourself be
-          convinced anyway — and honestly, that little yes made my whole day. 🚿🚫
-        </p>
-        <p className="lede">
-          So I&apos;m on my way to pick you up. Don&apos;t stress about a single thing —
-          you could roll out the door exactly as you are and you&apos;d still be the
-          best-looking person wherever we end up. 🚗💨
-        </p>
-
-        <div className="divider" />
-
-        <p className="note">but first… I made you a little something 💌</p>
-
-        <div style={{ marginTop: 24 }}>
-          <Link href="/ask" className="btn">
-            open it <span aria-hidden="true">→</span>
-          </Link>
+  // No valid guest/admin session: reveal nothing. Entry is only via /i/<token>.
+  if (!session) {
+    return (
+      <main className="door">
+        <div className="door-card">
+          <p className="door-icon" aria-hidden="true">📪</p>
+          <h1 className="door-title">Nothing to see here.</h1>
+          <p className="door-sub">
+            This page opens with a personal invitation link. If you have one,
+            use it — it knows the way.
+          </p>
         </div>
+      </main>
+    );
+  }
 
-        <p className="tiny">(it takes 10 seconds, promise)</p>
-      </section>
-    </main>
-  );
+  const state = await getState();
+  return <Mission initial={redactForGuest(state)} isAdmin={session.role === 'admin'} />;
 }
