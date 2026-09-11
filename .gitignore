@@ -1,7 +1,0 @@
-node_modules
-.next
-.DS_Store
-
-# local secrets and dev data store
-.env*.local
-.data/
